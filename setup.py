@@ -26,4 +26,6 @@ setup(name='buster-selenium',
       install_requires=['selenium'],
       extras_require={'layer': ['zope.testrunner'],
                       'testrunner': ['zope.testrunner']},
+      entry_points={'console_scripts': [
+                    "testrunner = buster_selenium.runner:run"]},
       )
