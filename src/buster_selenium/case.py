@@ -22,6 +22,10 @@ class BusterJSTestCase(unittest.TestCase):
 
     layer = layer.BusterJSSlaveLayer
 
+    def __init__(self, methodName='runTest', test_dir=None):
+        super(BusterJSTestCase, self).__init__(methodName)
+        self.test_dir = test_dir
+
     def setUp(self):
         if testrunner is None:
             # set up server and slave on test set up if layers are not
