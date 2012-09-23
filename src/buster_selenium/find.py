@@ -4,6 +4,24 @@ from zope.testing.testrunner import feature
 from zope.testing.testrunner import find
 
 
+def find_suites(options):
+    tests_pattern = options.tests_pattern
+    for (p, package) in find.test_dirs(options, {}):
+        for dirpath, dirs, files in os.walk(p):
+            d = os.path.split(dirpath)[1]
+            if not tests_pattern(d):
+                # not a tests directory
+                continue
+            if 'buster.js' in files:
+                # found a buster test suite
+                break
+            else:
+                # This tests dir is not a buster test suite
+                continue
+
+            yield suite
+
+
 class FindBusterJSTests(feature.Feature):
     """
     Find Buster.js test suites.
@@ -17,19 +35,10 @@ class FindBusterJSTests(feature.Feature):
     """
 
     def global_setup(self):
-        options = self.runner.options
-        tests_pattern = options.tests_pattern
-        for (p, package) in find.test_dirs(options, {}):
-            for dirpath, dirs, files in os.walk(p):
-                d = os.path.split(dirpath)[1]
-                if not tests_pattern(d):
-                    # not a tests directory
-                    continue
-                if 'buster.js' in files:
-                    # found a buster test suite
-                    break
-                else:
-                    # This tests dir is not a buster test suite
-                    continue
+        # Ensure that our find_suites is used
+        found_suites = self.runner.found_suites
+        if found_suites is None:
+            found_suites = find_suites(self.runner.options)
 
-                TODO
+        tests = find.find_tests(self.runner.options, found_suites)
+        self.runner.register_tests(tests)
