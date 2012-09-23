@@ -63,8 +63,10 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
     @classmethod
     def openSubprocess(cls, browser_executable):
         cls.slave = subprocess.Popen(
-            [browser_executable, '${:firefox-options}',
-             'http://localhost:1111/capture'])
+            [browser_executable] +
+            [opt.strip() for opt in
+             os.environ.get('BUSTER_SLAVE_BROWSER_OPTIONS', '').split()
+             if opt.strip()] + ['http://localhost:1111/capture'])
         return cls.slave
 
     @classmethod
