@@ -23,7 +23,7 @@ class BusterJSServerLayer(object):
         del cls.server
 
 
-class BusterJSSlaveLayer(object):
+class BusterJSSlaveLayer(BusterJSServerLayer):
     """
     Start up and shutdown a BusterJS slave browser via Selenium.
 
