@@ -1,4 +1,5 @@
 import sys
+import os
 
 try:
     import unittest2 as unittest
@@ -32,22 +33,29 @@ class BusterJSTestCase(unittest.TestCase):
             # available
             self.layer.setUp()
 
-        options = [option.strip() for option in """${options}""".split()
-                   if option.strip()]
-        output = TODO  # handle XML how?
+        self.bin = os.environ.get(
+            'BUSTER_TEST_BINARY', 'buster-test').strip()
+
+        self.options = [option.strip() for option in
+                        os.environ['BUSTER_TEST_OPTIONS'].split()
+                        if option.strip()]
+
+        output = os.environ['BUSTER_TEST_OUTPUT_DIR'].strip()
         if output and not os.path.isdir(output):
             os.makedirs(output)
         stdout = sys.stdout
         if output:
-            result = dirpath[len(p):].strip('/').replace(
-                '/', '-') + '.xml'
+            result = '${test_dir}-${dirpath}.xml'.format(
+                test_dir=os.path.basename(self.test_dir),
+                dirpath=self._testMethodName[
+                    len(self.test_dir):].strip('/').replace('/', '-'))
             stdout = open(os.path.join(output, result), 'w')
         self.stdout = stdout
 
     def run(self, result=None):
         retcode = subprocess.call(
-            [self.bin] + options + ['--config', os.path.join(dirpath, filename)]
-            + sys.argv[1:], stdout=stdout)
+            [self.bin] + self.options + ['--config', self._testMethodName]
+            + sys.argv[1:], stdout=self.stdout)
         if retcode:
             failures.append(dirpath)
 
