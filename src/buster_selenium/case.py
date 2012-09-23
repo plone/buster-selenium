@@ -2,6 +2,7 @@ import sys
 
 try:
     import unittest2 as unittest
+    unittest  # pyflakes
 except ImportError:
     import unittest
 
