@@ -60,7 +60,7 @@ class BusterJSTestCase(unittest.TestCase):
         if retcode == 1:
             self.fail('buster-test reported test failures.')
         elif retcode:
-            self.fail('buster-test reported errors.')
+            self.failureException('buster-test reported errors.')
 
     def tearDown(self):
         if testrunner is None:
