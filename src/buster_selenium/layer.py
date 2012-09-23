@@ -71,14 +71,15 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
             os.environ.get('BUSTER_SLAVE_SELENIUM_DRIVER', 'Firefox'))
         driver_args = shlex.split(
             os.environ.get('BUSTER_SLAVE_SELENIUM_ARGS', ''))
-        desired_capabilities = dict(
-            (key, os.environ.get(
-                'BUSTER_SLAVE_SELENIUM_GRID_' + key.upper(), value))
-             for key, value in
-            webdriver.DesiredCapabilities.FIREFOX.items())
+        kwargs = {}
+        if driver_class is webdriver.Remote:
+            kwargs['desired_capabilities'] = dict(
+                (key, os.environ.get(
+                    'BUSTER_SLAVE_SELENIUM_GRID_' + key.upper(), value))
+                for key, value in
+                webdriver.DesiredCapabilities.FIREFOX.items())
 
-        cls.driver = driver_class(*driver_args,
-                              desired_capabilities=desired_capabilities)
+        cls.driver = driver_class(*driver_args, **kwargs)
         cls.driver.get(cls.capture_url)
 
         return cls.driver
