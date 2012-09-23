@@ -13,7 +13,11 @@ try:
     from zope import testrunner
     testrunner  # pyflakes
 except ImportError:
-    testrunner = None
+    try:
+        from zope.testing import testrunner
+        testrunner  # pyflakes
+    except ImportError:
+        testrunner = None
 
 from buster_selenium import layer
 
