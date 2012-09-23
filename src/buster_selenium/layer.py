@@ -36,13 +36,17 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
 
     @classmethod
     def setUp(cls):
+        browser_executable = os.environ.get(
+            'BUSTER_SLAVE_BROWSER_EXECUTABLE', None)
+        if browser_executable is not None:
+            # BUSTER_SLAVE_BROWSER_EXECUTABLE overrides selenium
+            cls.openSubprocess(browser_executable)
+
         try:
             from selenium import webdriver
         except ImportError:
             # Fall back to running the browser directly
-            cls.slave = subprocess.Popen(
-                ['${:firefox-bin}', '${:firefox-options}',
-                 'http://localhost:1111/capture'])
+            cls.openSubprocess(browser_executable or 'firefox')
             return
 
         # Wait for slave to be captured
@@ -55,6 +59,13 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
         else:
             raise subprocess.CalledProcessError(
                 'Server closed stdout without capturing a slave.')
+
+    @classmethod
+    def openSubprocess(cls, browser_executable):
+        cls.slave = subprocess.Popen(
+            [browser_executable, '${:firefox-options}',
+             'http://localhost:1111/capture'])
+        return cls.slave
 
     @classmethod
     def tearDown(cls):
