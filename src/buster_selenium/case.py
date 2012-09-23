@@ -50,7 +50,7 @@ class BusterJSTestCase(unittest.TestCase):
             os.makedirs(output)
         stdout = sys.stdout
         if output:
-            result = '${test_dir}-${dirpath}.xml'.format(
+            result = '{test_dir}-{dirpath}.xml'.format(
                 test_dir=os.path.basename(self.test_dir),
                 dirpath=self._testMethodName[
                     len(self.test_dir):].strip('/').replace('/', '-'))
