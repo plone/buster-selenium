@@ -39,9 +39,9 @@ class BusterJSTestCase(unittest.TestCase):
         self.executable = os.environ.get(
             'BUSTER_TEST_EXECUTABLE', 'buster-test').strip()
 
-        self.options = shlex.split(os.environ['BUSTER_TEST_OPTIONS'])
+        self.options = shlex.split(os.environ.get('BUSTER_TEST_OPTIONS', ''))
 
-        output = os.environ['BUSTER_TEST_OUTPUT_DIR'].strip()
+        output = os.environ.get('BUSTER_TEST_OUTPUT_DIR', '').strip()
         if output and not os.path.isdir(output):
             os.makedirs(output)
         stdout = sys.stdout
