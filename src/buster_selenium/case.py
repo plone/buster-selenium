@@ -1,6 +1,7 @@
 import sys
 import os
 import subprocess
+import shlex
 
 try:
     import unittest2 as unittest
@@ -38,9 +39,7 @@ class BusterJSTestCase(unittest.TestCase):
         self.executable = os.environ.get(
             'BUSTER_TEST_EXECUTABLE', 'buster-test').strip()
 
-        self.options = [option.strip() for option in
-                        os.environ['BUSTER_TEST_OPTIONS'].split()
-                        if option.strip()]
+        self.options = shlex.split(os.environ['BUSTER_TEST_OPTIONS'])
 
         output = os.environ['BUSTER_TEST_OUTPUT_DIR'].strip()
         if output and not os.path.isdir(output):

@@ -1,5 +1,6 @@
 import subprocess
 import os
+import shlex
 
 
 class BusterJSServerLayer(object):
@@ -68,10 +69,8 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
         driver_class = getattr(
             webdriver,
             os.environ.get('BUSTER_SLAVE_SELENIUM_DRIVER', 'Firefox'))
-        driver_args = [
-            arg.strip() for arg in
-            os.environ.get('BUSTER_SLAVE_SELENIUM_ARGS', '').split()
-            if arg.split()]
+        driver_args = shlex.split(
+            os.environ.get('BUSTER_SLAVE_SELENIUM_ARGS', ''))
         desired_capabilities = dict(
             (key, os.environ.get(
                 'BUSTER_SLAVE_SELENIUM_GRID_' + key.upper(), value))
@@ -88,9 +87,9 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
     def openSubprocess(cls, browser_executable):
         cls.slave = subprocess.Popen(
             [browser_executable] +
-            [opt.strip() for opt in
-             os.environ.get('BUSTER_SLAVE_BROWSER_OPTIONS', '').split()
-             if opt.strip()] + [cls.capture_url])
+            shlex.split(os.environ.get(
+                'BUSTER_SLAVE_BROWSER_OPTIONS', '')) +
+            [cls.capture_url])
         return cls.slave
 
     @classmethod
