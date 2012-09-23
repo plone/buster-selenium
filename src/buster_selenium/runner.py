@@ -1,5 +1,4 @@
 import sys
-import os
 
 from zope.testrunner import runner
 
