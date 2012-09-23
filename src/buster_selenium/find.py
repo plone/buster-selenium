@@ -12,10 +12,7 @@ def find_suites(options):
             if not tests_pattern(d):
                 # not a tests directory
                 continue
-            if 'buster.js' in files:
-                # found a buster test suite
-                break
-            else:
+            if 'buster.js' not in files:
                 # This tests dir is not a buster test suite
                 continue
 
