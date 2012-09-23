@@ -36,9 +36,14 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
 
     @classmethod
     def setUp(cls):
-        cls.slave = subprocess.Popen(
-            ['${:firefox-bin}', '${:firefox-options}',
-             'http://localhost:1111/capture'])
+        try:
+            from selenium import webdriver
+        except ImportError:
+            # Fall back to running the browser directly
+            cls.slave = subprocess.Popen(
+                ['${:firefox-bin}', '${:firefox-options}',
+                 'http://localhost:1111/capture'])
+            return
 
         # Wait for slave to be captured
         server = BusterJSServerLayer.server
@@ -53,6 +58,7 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
 
     @classmethod
     def tearDown(cls):
-        cls.slave.terminate()
-        cls.slave.wait()
-        del cls.slave
+        if hasattr(cls, 'slave'):
+            cls.slave.terminate()
+            cls.slave.wait()
+            del cls.slave
