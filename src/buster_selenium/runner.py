@@ -49,7 +49,8 @@ class TestRunnerRecipe(recipe.TestRunner):
     def install(self):
         options = self.options
         dest = []
-        eggs, ws = self.egg.working_set(('zope.testing <3.10.0', ))
+        eggs, ws = self.egg.working_set(
+            ('zope.testing <3.10.0', 'buster-selenium'))
 
         test_paths = [ws.find(pkg_resources.Requirement.parse(spec)).location
                       for spec in eggs]
