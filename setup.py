@@ -26,9 +26,10 @@ setup(name='buster-selenium',
       install_requires=[],
       extras_require={'selenium': ['selenium'],
                       'layer': ['zope.testrunner'],
-                      'testrunner': ['zope.testrunner']},
+                      'testrunner': ['zope.testrunner'],
+                      'recipe': ['zc.recipe.testrunner']},
       entry_points={'console_scripts': [
                     "testrunner = buster_selenium.runner:run"],
                     'zc.buildout': [
-                    "default = buster_selenium.runner:TestRunnerRecipe"]},
+                    "default = buster_selenium.recipe:TestRunnerRecipe"]},
       )
