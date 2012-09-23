@@ -1,6 +1,9 @@
 import sys
 
-from zope.testrunner import runner
+try:
+    from zope.testrunner import runner
+except ImportError:
+    from zope.testing.testrunner import runner
 
 from buster_selenium import find
 
