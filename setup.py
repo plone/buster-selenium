@@ -24,5 +24,6 @@ setup(name='buster-selenium',
       include_package_data=True,
       setup_requires=['setuptools-git'],
       install_requires=['selenium'],
-      extras_require={'layer': ['zope.testrunner']},
+      extras_require={'layer': ['zope.testrunner'],
+                      'testrunner': ['zope.testrunner']},
       )
