@@ -45,16 +45,24 @@ class BusterJSTestCase(unittest.TestCase):
 
         self.options = shlex.split(os.environ.get('BUSTER_TEST_OPTIONS', ''))
 
-        output = os.environ.get('BUSTER_TEST_OUTPUT_DIR', '').strip()
-        if output and not os.path.isdir(output):
-            os.makedirs(output)
+        # Create and change to a test specific dir
+        self.cwd = os.getcwd()
+        test_dir = os.path.basename(self.test_dir)
+        output_dir = os.path.join(
+            test_dir, os.path.dirname(self._testMethodName)[
+                len(self.test_dir):].strip('/'))
+        try:
+            os.makedirs(output_dir)
+        except OSError:
+            # Directory already exists
+            pass
+        os.chdir(output_dir)
+
+        # Write output to a file instead of stdout if specified
         stdout = sys.stdout
+        output = os.environ.get('BUSTER_TEST_STDOUT', '').strip()
         if output:
-            result = '{test_dir}-{dirpath}.xml'.format(
-                test_dir=os.path.basename(self.test_dir),
-                dirpath=self._testMethodName[
-                    len(self.test_dir):].strip('/').replace('/', '-'))
-            stdout = open(os.path.join(output, result), 'w')
+            stdout = open(output, 'w')
         self.stdout = stdout
 
     def runTest(self, result=None):
@@ -67,6 +75,7 @@ class BusterJSTestCase(unittest.TestCase):
             self.failureException('buster-test reported errors.')
 
     def tearDown(self):
+        os.chdir(self.cwd)
         if testrunner is None:
             # set up server and slave on test set up if layers are not
             # available
