@@ -90,7 +90,7 @@ class TestRunnerRecipe(recipe.TestRunner):
             initialization += initialization_section
 
         dest.extend(zc.buildout.easy_install.scripts(
-            [(options['script'], 'buster-selenium', 'testrunner')],
+            [(options['script'], 'buster_selenium.runner', 'run')],
             ws, options['executable'],
             self.buildout['buildout']['bin-directory'],
             extra_paths=self.egg.extra_paths,
