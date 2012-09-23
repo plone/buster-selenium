@@ -13,7 +13,7 @@ class Runner(runner.Runner):
     def configure(self):
         """Include Buster.JS tests."""
         super(Runner, self).configure()
-        self.features.append(find.Find(self))
+        self.features.append(find.FindBusterJSTests(self))
 
 
 # Copied from zope.testrunner
