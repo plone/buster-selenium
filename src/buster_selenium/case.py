@@ -6,11 +6,21 @@ try:
 except ImportError:
     import unittest
 
+try:
+    from zope import testrunner
+except ImportError:
+    layer = None
+else:
+    from buster_selenium import layer
+
 
 class BusterJSTestCase(unittest.TestCase):
     """
     Run a Buster.js test file as a Python `unittest.TestCase`.
     """
+
+    if layer:
+        layer = layer.BusterJSSlaveLayer
 
     def run(self, result=None):
         options = [option.strip() for option in """${options}""".split()
