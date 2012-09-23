@@ -1,12 +1,12 @@
 import sys
 
 try:
-    from unittest2 import TestCase
+    import unittest2 as unittest
 except ImportError:
-    from unittest import TestCase
+    import unittest
 
 
-class BusterJSTestCase(TestCase):
+class BusterJSTestCase(unittest.TestCase):
     """
     Run a Buster.js test file as a Python `unittest.TestCase`.
     """
