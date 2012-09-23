@@ -34,6 +34,8 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
     through Selenium Grid.
     """
 
+    capture_url = 'http://localhost:1111/capture'
+
     @classmethod
     def setUp(cls):
         browser_executable = os.environ.get(
@@ -47,7 +49,8 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
         except ImportError:
             # Fall back to running the browser directly
             cls.openSubprocess(browser_executable or 'firefox')
-            return
+        else:
+            cls.openSelenium(webdriver)
 
         # Wait for slave to be captured
         server = BusterJSServerLayer.server
@@ -61,12 +64,33 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
                 'Server closed stdout without capturing a slave.')
 
     @classmethod
+    def openSelenium(cls, webdriver):
+        driver_class = getattr(
+            webdriver,
+            os.environ.get('BUSTER_SLAVE_SELENIUM_DRIVER', 'Firefox'))
+        driver_args = [
+            arg.strip() for arg in
+            os.environ.get('BUSTER_SLAVE_SELENIUM_ARGS', '').split()
+            if arg.split()]
+        desired_capabilities = dict(
+            (key, os.environ.get(
+                'BUSTER_SLAVE_SELENIUM_GRID_' + key.upper(), value))
+             for key, value in
+            webdriver.DesiredCapabilities.FIREFOX.items())
+
+        cls.driver = driver_class(*driver_args,
+                              desired_capabilities=desired_capabilities)
+        cls.driver.get(cls.capture_url)
+
+        return cls.driver
+
+    @classmethod
     def openSubprocess(cls, browser_executable):
         cls.slave = subprocess.Popen(
             [browser_executable] +
             [opt.strip() for opt in
              os.environ.get('BUSTER_SLAVE_BROWSER_OPTIONS', '').split()
-             if opt.strip()] + ['http://localhost:1111/capture'])
+             if opt.strip()] + [cls.capture_url])
         return cls.slave
 
     @classmethod
@@ -75,3 +99,6 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
             cls.slave.terminate()
             cls.slave.wait()
             del cls.slave
+        elif hasattr(cls, 'driver'):
+            cls.driver.quit()
+            del cls.driver
