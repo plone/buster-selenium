@@ -44,14 +44,14 @@ class BusterJSSlaveLayer(BusterJSServerLayer):
         if browser_executable is not None:
             # BUSTER_SLAVE_BROWSER_EXECUTABLE overrides selenium
             cls.openSubprocess(browser_executable)
-
-        try:
-            from selenium import webdriver
-        except ImportError:
-            # Fall back to running the browser directly
-            cls.openSubprocess(browser_executable or 'firefox')
         else:
-            cls.openSelenium(webdriver)
+            try:
+                from selenium import webdriver
+            except ImportError:
+                # Fall back to running the browser directly
+                cls.openSubprocess(browser_executable or 'firefox')
+            else:
+                cls.openSelenium(webdriver)
 
         # Wait for slave to be captured
         server = BusterJSServerLayer.server
