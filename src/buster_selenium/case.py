@@ -26,8 +26,8 @@ class BusterJSTestCase(unittest.TestCase):
     layer = layer.BusterJSSlaveLayer
 
     def __init__(self, methodName='runTest', test_dir=None):
-        super(BusterJSTestCase, self).__init__(methodName)
         setattr(self, methodName, self.runTest)
+        super(BusterJSTestCase, self).__init__(methodName)
         self.test_dir = test_dir
 
     def setUp(self):
