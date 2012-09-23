@@ -58,8 +58,10 @@ class BusterJSTestCase(unittest.TestCase):
         retcode = subprocess.call(
             [self.bin] + self.options + ['--config', self._testMethodName]
             + sys.argv[1:], stdout=self.stdout)
-        if retcode:
-            failures.append(dirpath)
+        if retcode == 1:
+            self.fail('buster-test reported test failures.')
+        elif retcode:
+            self.fail('buster-test reported errors.')
 
     def tearDown(self):
         if testrunner is None:
