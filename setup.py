@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
 
 setup(name='buster-selenium',
@@ -19,6 +19,8 @@ setup(name='buster-selenium',
       author_email='me@rpatterson.net',
       url='http://github.com/plone/buster-selenium',
       license='GPL',
+      packages=find_packages('src'),
+      package_dir={'': 'src'},
       include_package_data=True,
       setup_requires=['setuptools-git'],
       install_requires=['selenium'],
