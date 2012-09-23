@@ -6,6 +6,12 @@ try:
 except ImportError:
     import unittest
 
+try:
+    from zope import testrunner
+    testrunner  # pyflakes
+except ImportError:
+    testrunner = None
+
 from buster_selenium import layer
 
 
@@ -15,6 +21,12 @@ class BusterJSTestCase(unittest.TestCase):
     """
 
     layer = layer.BusterJSSlaveLayer
+
+    def setUp(self):
+        if testrunner is None:
+            # set up server and slave on test set up if layers are not
+            # available
+            self.layer.setUp()
 
     def run(self, result=None):
         options = [option.strip() for option in """${options}""".split()
@@ -33,3 +45,9 @@ class BusterJSTestCase(unittest.TestCase):
                         + sys.argv[1:], stdout=stdout)
                     if retcode:
                         failures.append(dirpath)
+
+    def tearDown(self):
+        if testrunner is None:
+            # set up server and slave on test set up if layers are not
+            # available
+            self.layer.tearDown()
