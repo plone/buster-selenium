@@ -1,7 +1,15 @@
 import os
 
+try:
+    import unittest2 as unittest
+    unittest  # pyflakes
+except ImportError:
+    import unittest
+
 from zope.testing.testrunner import feature
 from zope.testing.testrunner import find
+
+from buster_selenium import case
 
 
 def find_suites(options):
@@ -16,7 +24,10 @@ def find_suites(options):
                 # This tests dir is not a buster test suite
                 continue
 
-            yield suite
+            # TODO individual test cases for every test file specified
+            # in buster.js
+            yield unittest.TestSuite([
+                case.TestCase(os.path.join(dirpath, 'buster.js'))])
 
 
 class FindBusterJSTests(feature.Feature):
