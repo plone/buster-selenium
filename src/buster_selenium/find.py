@@ -14,7 +14,10 @@ from buster_selenium import case
 
 def find_suites(options):
     tests_pattern = options.tests_pattern
+    seen = set()
     for (p, package) in find.test_dirs(options, {}):
+        if p in seen:
+            continue
         for dirpath, dirs, files in os.walk(p):
             d = os.path.split(dirpath)[1]
             if not tests_pattern(d):
@@ -28,6 +31,7 @@ def find_suites(options):
             # in buster.js
             yield unittest.TestSuite([case.BusterJSTestCase(
                 os.path.join(dirpath, 'buster.js'), test_dir=p)])
+        seen.add(p)
 
 
 class FindBusterJSTests(feature.Feature):
