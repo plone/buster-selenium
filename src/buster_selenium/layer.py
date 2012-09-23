@@ -11,11 +11,12 @@ class BusterJSServerLayer(object):
 
     @classmethod
     def setUp(cls):
-        binary = os.environ.get(
-            'BUSTER_SERVER_BINARY', 'buster-server').strip()
+        executable = os.environ.get(
+            'BUSTER_SERVER_EXECUTABLE', 'buster-server').strip()
 
         # From http://trodrigues.net/presentations/buster-ci/#/24
-        cls.server = subprocess.Popen([binary, '-v'], stdout=subprocess.PIPE)
+        cls.server = subprocess.Popen([executable, '-v'],
+                                      stdout=subprocess.PIPE)
 
     @classmethod
     def tearDown(cls):

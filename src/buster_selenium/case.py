@@ -35,8 +35,8 @@ class BusterJSTestCase(unittest.TestCase):
             # available
             self.layer.setUp()
 
-        self.binary = os.environ.get(
-            'BUSTER_TEST_BINARY', 'buster-test').strip()
+        self.executable = os.environ.get(
+            'BUSTER_TEST_EXECUTABLE', 'buster-test').strip()
 
         self.options = [option.strip() for option in
                         os.environ['BUSTER_TEST_OPTIONS'].split()
@@ -56,8 +56,9 @@ class BusterJSTestCase(unittest.TestCase):
 
     def runTest(self, result=None):
         retcode = subprocess.call(
-            [self.binary] + self.options + ['--config', self._testMethodName]
-            + sys.argv[1:], stdout=self.stdout)
+            [self.executable] + self.options +
+            ['--config', self._testMethodName] + sys.argv[1:],
+            stdout=self.stdout)
         if retcode == 1:
             self.fail('buster-test reported test failures.')
         elif retcode:
