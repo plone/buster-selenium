@@ -56,8 +56,7 @@ class BusterJSTestCase(unittest.TestCase):
     def runTest(self, result=None):
         retcode = subprocess.call(
             [self.executable] + self.options +
-            ['--config', self._testMethodName] + sys.argv[1:],
-            stdout=self.stdout)
+            ['--config', self._testMethodName], stdout=self.stdout)
         if retcode == 1:
             self.fail('buster-test reported test failures.')
         elif retcode:
