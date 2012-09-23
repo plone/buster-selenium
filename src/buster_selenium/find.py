@@ -26,8 +26,8 @@ def find_suites(options):
 
             # TODO individual test cases for every test file specified
             # in buster.js
-            yield unittest.TestSuite([
-                case.TestCase(os.path.join(dirpath, 'buster.js'), test_dir=p)])
+            yield unittest.TestSuite([case.BusterJSTestCase(
+                os.path.join(dirpath, 'buster.js'), test_dir=p)])
 
 
 class FindBusterJSTests(feature.Feature):
