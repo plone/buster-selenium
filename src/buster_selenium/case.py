@@ -26,6 +26,7 @@ class BusterJSTestCase(unittest.TestCase):
 
     def __init__(self, methodName='runTest', test_dir=None):
         super(BusterJSTestCase, self).__init__(methodName)
+        setattr(self, methodName, self.runTest)
         self.test_dir = test_dir
 
     def setUp(self):
@@ -53,7 +54,7 @@ class BusterJSTestCase(unittest.TestCase):
             stdout = open(os.path.join(output, result), 'w')
         self.stdout = stdout
 
-    def run(self, result=None):
+    def runTest(self, result=None):
         retcode = subprocess.call(
             [self.bin] + self.options + ['--config', self._testMethodName]
             + sys.argv[1:], stdout=self.stdout)
