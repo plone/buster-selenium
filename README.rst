@@ -13,7 +13,7 @@ controlling the `buster-server`_ and capturing Buster.JS browser
 slaves.
 
 Managing ``buster-server`` and Capturing Browser Slaves
-=====================================================
+=======================================================
 
 The ``buster_selenium.case.BusterJSTestCase`` class is a sub-class of
 `unittest.TestCase`_ and can be used to create Python test cases that
@@ -107,7 +107,7 @@ See the `zope.testrunner`_ docs or ``buster-testrunner --help`` for more
 details on controlling test discovery and which tests are run.
 
 Sharing ``buster-server`` and Browser Slave Capture Between Tests
-===============================================================
+=================================================================
 
 The ``buster_selenium.layer`` module uses ``zope.testrunner`` support for
 `testing layers`_ to start ``buster-server``, launch a browser, and
