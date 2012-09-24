@@ -29,7 +29,7 @@ setup(name='buster-selenium',
                       'testrunner': ['zope.testrunner'],
                       'recipe': ['zc.recipe.testrunner']},
       entry_points={'console_scripts': [
-                    "testrunner = buster_selenium.runner:run"],
+                    "buster-testrunner = buster_selenium.runner:run"],
                     'zc.buildout': [
                     "default = buster_selenium.recipe:TestRunnerRecipe"]},
       )
