@@ -32,6 +32,8 @@ class BusterJSTestCase(unittest.TestCase):
     def __init__(self, methodName='runTest', test_dir=None):
         setattr(self, methodName, self.runTest)
         super(BusterJSTestCase, self).__init__(methodName)
+        if test_dir is None:
+            test_dir = os.path.dirname(methodName)
         self.test_dir = test_dir
 
     def setUp(self):
