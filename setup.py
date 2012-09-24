@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 setup(name='buster-selenium',
-      version='0.1',
+      version='0.2',
       description="Manage buster.js slave browsers using selenium.",
       long_description=(
           open(os.path.join(os.path.dirname(__file__),
