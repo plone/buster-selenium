@@ -43,7 +43,7 @@ BUSTER_TEST_EXECUTABLE
   `buster-test` executable to be used to run the tests.  Useful if
   you're installing/building Buster.JS as a part of your
   build/deployment environment.  If this variable is not defined, the
-  `PATH` will be searched for `buster-test`.
+  first `buster-test` available on `PATH` will be used.
 
 BUSTER_TEST_OPTIONS
   If defined, the value of this variable will be passed to Python's
@@ -53,7 +53,46 @@ BUSTER_TEST_OPTIONS
 
 BUSTER_TEST_STDOUT
   If defined, the stdout output of the `buster-test` executable will
-  be written to this file.  
+  be written to this file.
+
+BUSTER_SERVER_EXECUTABLE
+  Like `BUSTER_TEST_EXECUTABLE`, if defined, the path given will be
+  used as the `buster-server` executable.  Otherwise the first
+  `buster-server` found on `PATH` will be used.
+
+BUSTER_SLAVE_BROWSER_EXECUTABLE
+  If defined, the executable at the path given will be invoked as a
+  slave browser and captured by the `buster-server` previously
+  started.  If the `selenium.webdriver` package is availble, setting
+  this overrides the default behavior of capturing a browser slave via
+  Selenium.
+
+BUSTER_SLAVE_BROWSER_OPTIONS
+  If defined, the value of this variable will be passed to Python's
+  `shlex.split`_ and passed as arguments/options to the
+  `BUSTER_SLAVE_BROWSER_EXECUTABLE` executable.
+
+BUSTER_SLAVE_SELENIUM_DRIVER
+  If the `selenium.webdriver` package is availble and this variable is
+  set, the value will be used to retrieve a Selenium driver from the
+  `selenium.webdriver Python module`_.  By default, `Firefox` is used.
+
+BUSTER_SLAVE_SELENIUM_ARGS
+  If defined, the value of this variable will be passed to Python's
+  `shlex.split`_ and passed as positional arguments to the
+  `selenium.webdriver` used.
+
+BUSTER_SLAVE_SELENIUM_GRID_BROWSERNAME
+BUSTER_SLAVE_SELENIUM_GRID_VERSION
+BUSTER_SLAVE_SELENIUM_GRID_PLATFORM
+BUSTER_SLAVE_SELENIUM_GRID_JAVASCRIPTENABLED
+  If using `Selenium Grid`_ by setting
+  `BUSTER_SLAVE_SELENIUM_DRIVER=Remote` and this variable defined,
+  these values will be used to modify the values for the
+  `browserName`, `version`, `platform`, and `javascriptEnabled` keys
+  in the `selenium.webdriver.DesiredCapabilities` dictionaries.  This
+  is useful to run your buster tests against different OS's, browsers,
+  and versions.
 
 Buster.JS Test Discovery
 ========================
@@ -105,3 +144,5 @@ tests.
 .. _selenium.webdriver: http://seleniumhq.org/docs/03_webdriver.html
 .. _shlex.split: http://docs.python.org/library/shlex.html#shlex.split
 .. _buster-test --report: http://busterjs.org/docs/test/reporters
+.. _selenium.webdriver Python module: http://seleniumhq.org/docs/03_webdriver.html#selenium-webdriver-s-drivers
+.. _Selenium Grid: http://selenium-grid.seleniumhq.org/
