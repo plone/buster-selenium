@@ -61,6 +61,18 @@ clean mangement of the `buster-server` and captured browser slaves.
 These layers are used automatically when using the test discovery
 described above.
 
+Managing Browser Slaves with Selenium Webdriver
+===============================================
+
+If the selenium Python package is available, by default the
+`BusterJSTestCase` and `testing layer`_ support described above will
+use `selenium.webdriver`_ to open, capture, and clean up a browser
+slave.  The way that `selenium.webdriver` launches browsers provides
+an additional degree of isolation from user extensions, profiles,
+themes, and other add-ons and provides greater isolation for Buster.JS
+tests.
+
+
 .. _Buster.js: http://busterjs.org/
 .. _Buster slaves: http://busterjs.org/docs/capture-server/
 .. _Python: http://python.org
@@ -69,3 +81,4 @@ described above.
 .. _buster-server: http://busterjs.org/docs/server-cli/
 .. _unittest.TestCase: http://docs.python.org/library/unittest.html#unittest.TestCase
 .. _automatically finding tests: http://pypi.python.org/pypi/zope.testrunner#test-runner
+.. _selenium.webdriver: http://seleniumhq.org/docs/03_webdriver.html
