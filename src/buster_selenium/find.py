@@ -23,14 +23,14 @@ def find_suites(options):
             if not tests_pattern(d):
                 # not a tests directory
                 continue
-            if 'buster.js' not in files:
-                # This tests dir is not a buster test suite
-                continue
-
-            # TODO individual test cases for every test file specified
-            # in buster.js
-            yield unittest.TestSuite([case.BusterJSTestCase(
-                os.path.join(dirpath, 'buster.js'), test_dir=p)])
+            for filename in files:
+                root, ext = os.path.splitext(filename)
+                if ext == '.js' and root.startswith('buster'):
+                    # This tests dir is a buster test suite
+                    # TODO individual test cases for every test file specified
+                    # in buster.js
+                    yield unittest.TestSuite([case.BusterJSTestCase(
+                        os.path.join(dirpath, filename), test_dir=p)])
         seen.add(p)
 
 

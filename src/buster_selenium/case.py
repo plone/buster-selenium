@@ -52,7 +52,8 @@ class BusterJSTestCase(unittest.TestCase):
         test_dir = os.path.basename(self.test_dir)
         output_dir = os.path.join(
             test_dir, os.path.dirname(self._testMethodName)[
-                len(self.test_dir):].strip('/'))
+                len(self.test_dir):].strip('/'),
+            os.path.splitext(os.path.basename(self._testMethodName))[0])
         try:
             os.makedirs(output_dir)
         except OSError:

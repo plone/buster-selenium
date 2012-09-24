@@ -34,6 +34,14 @@ failure if ``buster-test`` exits with a status code of ``1`` or will
 report erro if it exits with any other non-zero status code.  Finally,
 it will shutdown the browser slave and the ``buster-server``.
 
+Before running ``buster-test``, the ``BusterJSTestCase`` will create a
+directory corresponding to the ``buster*.js`` test suite in the
+current working directory and change to that directory before
+executing.  This can be useful when working with the
+`buster-coverage`_ extension, for example, so that the output of the
+extension is collected in a unique directory without clobbering the
+output from other test suites.
+
 The ``BusterJSTestCase`` class uses a few environment variables to
 control how the ``buster-test`` executable is invoked and what is done
 with its output:
@@ -53,7 +61,8 @@ BUSTER_TEST_OPTIONS
 
 BUSTER_TEST_STDOUT
   If defined, the stdout output of the ``buster-test`` executable will
-  be written to this file.
+  be written to this file.  The file will be written in the same
+  directory created as described above.
 
 BUSTER_SERVER_EXECUTABLE
   Like ``BUSTER_TEST_EXECUTABLE``, if defined, the path given will be
@@ -94,17 +103,26 @@ BUSTER_SLAVE_SELENIUM_GRID_BROWSERNAME, BUSTER_SLAVE_SELENIUM_GRID_VERSION, BUST
 Buster.JS Test Discovery
 ========================
 
-The ``buster-selenium`` package provides a ``buster-testrunner`` console
-script which adds discovery of Buster.JS tests to the
+The ``buster-selenium`` package provides a ``buster-testrunner``
+console script which adds discovery of Buster.JS tests to the
 `zope.testrunner`_ support for `automatically finding tests`_
-throughout a project.  In particular, it will create test suites from
-any directory under a valid ``buster-testrunner --test-path`` that has a
-``buster.js`` file::
+throughout a project.  In particular, it will create a test suite for
+any buster configuration file of the pattern ``buster*.js`` in a
+directory under a valid ``buster-testrunner --test-path``::
 
     $ buster-testrunner --test-path=/path/to/project/module --test-path=/path/to/project/other-module
 
 See the `zope.testrunner`_ docs or ``buster-testrunner --help`` for more
 details on controlling test discovery and which tests are run.
+
+If you want to redirect ``buster-test`` output using
+``BUSTER_TEST_STDOUT``, be aware that running multiple Buster.JS test
+suites in the same ``buster.js`` configuration file will result in the
+output for all suites in that file being written to the same output
+file.  With the ``buster-test --reporter xml`` reporter, for example,
+this will result in invalid XML.  A workaround is to use a separate
+``buster*.js`` configuration file for each suite so that output is
+written to separate directories.
 
 Sharing ``buster-server`` and Browser Slave Capture Between Tests
 =================================================================
@@ -143,3 +161,4 @@ tests.
 .. _buster-test --report: http://busterjs.org/docs/test/reporters
 .. _selenium.webdriver Python module: http://seleniumhq.org/docs/03_webdriver.html#selenium-webdriver-s-drivers
 .. _Selenium Grid: http://selenium-grid.seleniumhq.org/
+.. _buster-coverage: https://github.com/ebi/buster-coverage#buster-coverage
