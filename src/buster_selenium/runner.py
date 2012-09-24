@@ -2,6 +2,7 @@ import sys
 
 try:
     from zope.testrunner import runner
+    runner  # pyflakes
 except ImportError:
     from zope.testing.testrunner import runner
 
