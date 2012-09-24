@@ -34,6 +34,27 @@ failure if `buster-test` exits with a status code of `1` or will
 report erro if it exits with any other non-zero status code.  Finally,
 it will shutdown the browser slave and the `buster-server`.
 
+The `BusterJSTestCase` class uses a few environment variables to
+control how the `buster-test` executable is invoked and what is done
+with its output:
+
+BUSTER_TEST_EXECUTABLE
+  If defined, the value of this will be used as the path to the
+  `buster-test` executable to be used to run the tests.  Useful if
+  you're installing/building Buster.JS as a part of your
+  build/deployment environment.  If this variable is not defined, the
+  `PATH` will be searched for `buster-test`.
+
+BUSTER_TEST_OPTIONS
+  If defined, the value of this variable will be passed to Python's
+  `shlex.split`_ and passed as arguments/options to the `buster-test`
+  executable.  This can be useful, for example, to use different
+  `buster-test --report`_ options.
+
+BUSTER_TEST_STDOUT
+  If defined, the stdout output of the `buster-test` executable will
+  be written to this file.  
+
 Buster.JS Test Discovery
 ========================
 
@@ -82,3 +103,5 @@ tests.
 .. _unittest.TestCase: http://docs.python.org/library/unittest.html#unittest.TestCase
 .. _automatically finding tests: http://pypi.python.org/pypi/zope.testrunner#test-runner
 .. _selenium.webdriver: http://seleniumhq.org/docs/03_webdriver.html
+.. _shlex.split: http://docs.python.org/library/shlex.html#shlex.split
+.. _buster-test --report: http://busterjs.org/docs/test/reporters
