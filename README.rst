@@ -122,7 +122,7 @@ Managing Browser Slaves with Selenium Webdriver
 ===============================================
 
 If the selenium Python package is available, by default the
-``BusterJSTestCase`` and `testing layer`_ support described above will
+``BusterJSTestCase`` and testing layer support described above will
 use `selenium.webdriver`_ to open, capture, and clean up a browser
 slave.  The way that ``selenium.webdriver`` launches browsers provides
 an additional degree of isolation from user extensions, profiles,
