@@ -50,16 +50,15 @@ class BusterJSTestCase(unittest.TestCase):
         # Create and change to a test specific dir
         self.cwd = os.getcwd()
         test_dir = os.path.basename(self.test_dir)
-        output_dir = os.path.join(
+        self.output_dir = os.path.join(
             test_dir, os.path.dirname(self._testMethodName)[
                 len(self.test_dir):].strip('/'),
             os.path.splitext(os.path.basename(self._testMethodName))[0])
         try:
-            os.makedirs(output_dir)
+            os.makedirs(self.output_dir)
         except OSError:
             # Directory already exists
             pass
-        os.chdir(output_dir)
 
         # Write output to a file instead of stdout if specified
         stdout = sys.stdout
@@ -71,7 +70,8 @@ class BusterJSTestCase(unittest.TestCase):
     def runTest(self, result=None):
         retcode = subprocess.call(
             [self.executable] + self.options +
-            ['--config', self._testMethodName], stdout=self.stdout)
+            ['--config', self._testMethodName],
+            stdout=self.stdout, cwd=self.output_dir)
         if retcode == 1:
             self.fail('buster-test reported test failures.')
         elif retcode:
