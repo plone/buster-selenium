@@ -22,6 +22,7 @@ class BusterJSServerLayer(object):
     @classmethod
     def tearDown(cls):
         cls.server.terminate()
+        cls.server.communicate()
         cls.server.wait()
         del cls.server
 
